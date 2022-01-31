@@ -45,14 +45,12 @@ public class WordServiceImpl implements IWordService {
             Optional<Word> inputCheck = repository.findByValueEqualsAndLengthEquals(dto.getText(), dto.getLength());
             if (inputCheck.isPresent()) {
                 //cevap yanlış ama kelime var
-                char[] answerChar = answer.getValue().toCharArray();
-                char[] requestChar = dto.getText().toCharArray();
-
                 for (int i = 0; i < dto.getLength(); i++) {
-                    if (answerChar[i] == requestChar[i]) {
+                    if (answer.getValue().charAt(i) == dto.getText().charAt(i)) {
                         charControl.put(i, true);
                     } else {
-                        charControl.put(i, false);
+                        if (answer.getValue().indexOf(dto.getText().charAt(i)) != -1)
+                            charControl.put(i, false);
                     }
                 }
             }
