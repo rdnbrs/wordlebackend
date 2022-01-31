@@ -1,9 +1,6 @@
 package com.rdnbrs.wordle.service.impl;
 
-import com.rdnbrs.wordle.dto.CheckWordRequestDto;
-import com.rdnbrs.wordle.dto.CheckWordResponseDto;
-import com.rdnbrs.wordle.dto.RandomWordReponse;
-import com.rdnbrs.wordle.dto.RandomWordRequest;
+import com.rdnbrs.wordle.dto.*;
 import com.rdnbrs.wordle.entity.Word;
 import com.rdnbrs.wordle.repository.WordRepository;
 import com.rdnbrs.wordle.service.IWordService;
@@ -37,7 +34,7 @@ public class WordServiceImpl implements IWordService {
         CheckWordResponseDto responseDto = new CheckWordResponseDto();
         HashMap<Integer, Boolean> charControl = new HashMap<>();
         Word answer = repository.findById(dto.getResponseId()).get();
-        if (answer.equals(dto.getText())) {
+        if (answer.getValue().equals(dto.getText())) {
             //cevap bilindi
             responseDto.setAnswerStatus(true);
         } else {
@@ -54,8 +51,19 @@ public class WordServiceImpl implements IWordService {
                     }
                 }
             }
+            else{
+                //yanlış kelime
+                charControl.put(-1, true);
+            }
             responseDto.setCharControl(charControl);
         }
         return responseDto;
+    }
+
+    @Override
+    public AddWordResponseDto addWord(AddWordRequestDto dto) {
+        Word newWord = Word.builder().value(dto.getValue()).length(dto.getLength()).build();
+        newWord = repository.save(newWord);
+        return AddWordResponseDto.builder().id(newWord.getId()).value(newWord.getValue()).length(newWord.getLength()).build();
     }
 }

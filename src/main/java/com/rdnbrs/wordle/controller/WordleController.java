@@ -1,9 +1,6 @@
 package com.rdnbrs.wordle.controller;
 
-import com.rdnbrs.wordle.dto.CheckWordRequestDto;
-import com.rdnbrs.wordle.dto.CheckWordResponseDto;
-import com.rdnbrs.wordle.dto.RandomWordReponse;
-import com.rdnbrs.wordle.dto.RandomWordRequest;
+import com.rdnbrs.wordle.dto.*;
 import com.rdnbrs.wordle.service.IWordService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +24,11 @@ public class WordleController {
     @PostMapping("/checkWord")
     public ResponseEntity<CheckWordResponseDto> checkWord(@RequestBody CheckWordRequestDto dto){
         return new ResponseEntity<CheckWordResponseDto>(service.checkWord(dto), HttpStatus.OK);
+    }
+
+    @PostMapping("/addWord")
+    public ResponseEntity<AddWordResponseDto> addWord(@RequestBody AddWordRequestDto dto){
+        return new ResponseEntity<AddWordResponseDto>(service.addWord(dto), HttpStatus.OK);
     }
 
 }
